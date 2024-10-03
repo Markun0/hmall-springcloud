@@ -1,0 +1,6 @@
+hm:
+  db:
+    host: localhost
+    pw: 123456
+  nacos:
+    host: 127.0.0.1
