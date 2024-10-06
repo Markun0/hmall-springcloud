@@ -17,6 +17,7 @@
         <module>user-service</module>
         <module>pay-service</module>
         <module>trade</module>
+        <module>hm-gateway</module>
         <!--        <module>cart-service</module>-->
 <!--        <module>hm-api</module>-->
 <!--        <module>user-service</module>-->
@@ -48,6 +49,11 @@
     <!-- 对依赖包进行管理 -->
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>net.sf.cglib</groupId>
+                <artifactId>cglib</artifactId>
+                <version>3.3.0</version> <!-- 选择一个与 JDK 兼容的版本 -->
+            </dependency>
             <!--spring cloud-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
