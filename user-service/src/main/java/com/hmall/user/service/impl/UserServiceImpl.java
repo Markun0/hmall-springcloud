@@ -14,6 +14,7 @@ import com.hmall.user.enums.UserStatus;
 import com.hmall.user.mapper.UserMapper;
 import com.hmall.user.service.IUserService;
 import com.hmall.user.utils.JwtTool;
+import com.hmall.user.utils.RedisTokenManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,6 +39,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     private final JwtProperties jwtProperties;
 
+    private final RedisTokenManager redisTokenManager;
+
     @Override
     public UserLoginVO login(LoginFormDTO loginDTO) {
         // 1.数据校验
@@ -56,7 +59,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         // 5.生成TOKEN
         String token = jwtTool.createToken(user.getId(), jwtProperties.getTokenTTL());
-        // 6.封装VO返回
+        // 6. redis 设置token
+        redisTokenManager.setToken(user.getId(), token);
+        // 7.封装VO返回
         UserLoginVO vo = new UserLoginVO();
         vo.setUserId(user.getId());
         vo.setUsername(user.getUsername());

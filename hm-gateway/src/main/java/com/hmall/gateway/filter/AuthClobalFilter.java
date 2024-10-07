@@ -4,6 +4,7 @@ import cn.hutool.core.exceptions.ValidateException;
 import com.hmall.common.exception.UnauthorizedException;
 import com.hmall.gateway.config.AuthProperties;
 import com.hmall.gateway.utils.JwtTool;
+import com.hmall.gateway.utils.RedisTokenManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -30,6 +31,7 @@ public class AuthClobalFilter implements GlobalFilter , Ordered {
 
     private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
+    private final RedisTokenManager redisTokenManager;
     @Override
     public int getOrder() {
         return 0;
@@ -59,6 +61,11 @@ public class AuthClobalFilter implements GlobalFilter , Ordered {
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return response.setComplete();
         }
+        // 5. redis 校验
+        if(!token.equals(redisTokenManager.getToken(userId))){
+            throw new ValidateException("token已过期");
+        }
+        redisTokenManager.updateToken(userId);
         // 5. 传递用户信息
         String userInfo = userId.toString();
         ServerWebExchange swe = exchange.mutate()

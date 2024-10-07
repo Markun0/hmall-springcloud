@@ -11,4 +11,3 @@ spring:
         shared-configs:
           - shared-jdbc.yaml
           - shared-log.yaml
-          - shared-seata.yaml
