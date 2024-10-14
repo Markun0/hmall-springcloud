@@ -22,7 +22,7 @@ public class RabbitMqHelper {
     public void sendDelayMessage(String exchange, String routingKey, Object msg, int delay){
         rabbitTemplate.convertAndSend(exchange, routingKey, msg, message -> {
             // 给消息添加延迟时间
-            message.getMessageProperties().setDelay(delay);
+            message.getMessageProperties().setExpiration(String.valueOf(delay));
             return message;
         });
     }

@@ -47,6 +47,12 @@
             <artifactId>hm-api</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <!--需要引入该jar才能使bootstrap配置文件生效-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-context</artifactId>
+        </dependency>
+
         <!--读取bootstrap配置-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -60,6 +66,11 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-redis</artifactId>
+        </dependency>
+        <!--amqp-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
     </dependencies>
     <build>

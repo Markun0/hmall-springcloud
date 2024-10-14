@@ -12,3 +12,4 @@ spring:
         - shared-jdbc.yaml
         - shared-log.yaml
         - shared-jwt.yaml
+        - shared-seata.yaml

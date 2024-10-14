@@ -14,6 +14,7 @@ import com.hmall.pay.domain.po.PayOrder;
 import com.hmall.pay.enums.PayStatus;
 import com.hmall.pay.mapper.PayOrderMapper;
 import com.hmall.pay.service.IPayOrderService;
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.AmqpException;
@@ -50,6 +51,7 @@ public class PayOrderServiceImpl extends ServiceImpl<PayOrderMapper, PayOrder> i
 
     @Override
     @Transactional
+    @GlobalTransactional
     public void tryPayOrderByBalance(PayOrderDTO payOrderDTO) {
         // 1.查询支付单
         PayOrder po = getById(payOrderDTO.getId());
@@ -60,7 +62,9 @@ public class PayOrderServiceImpl extends ServiceImpl<PayOrderMapper, PayOrder> i
         }
         // 3.尝试扣减余额
         userClient.deductMoney(payOrderDTO.getPw(), po.getAmount());
-        // 4.修改支付单状态
+        // 4.修改支付单状态makunlin@makunlin-Nitro-AN515-58:~$ su root
+        //密码：
+        //su: 认证失败
         boolean success = markPayOrderSuccess(payOrderDTO.getId(), LocalDateTime.now());
         if (!success) {
             throw new BizIllegalException("交易已支付或关闭！");
